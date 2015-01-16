@@ -14,7 +14,7 @@
    
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-  	
+    
 */
 
 if (!d3) { throw "d3 wasn't included!"};
@@ -185,7 +185,7 @@ if (!d3) { throw "d3 wasn't included!"};
       }
     }
     visitPreOrder(nodes[0], function(node) {
-      node.rootDist = (node.parent ? node.parent.rootDist : 0) + (node.data.length || 0)
+      node.rootDist = (node.parent ? node.parent.rootDist : 0) + (!(typeof node.branchset === "undefined" ) ? node.branchset.length : 0)
     })
     var rootDists = nodes.map(function(n) { return n.rootDist; });
     var yscale = d3.scale.linear()
@@ -329,16 +329,6 @@ if (!options.skipTicks) {
             });
         };
     }
-  //Tooltips by Tipsy
-
-  $('g.node').tipsy({ 
-        gravity: 'w', 
-        html: true, 
-        title: function() {
-          var d = this.__data__;
-          return d.data.name; 
-        }
-      });
   
     d3.phylonator.styleTreeNodes(vis, nodes)
 
