@@ -114,6 +114,7 @@ if (!d3) { throw "d3 wasn't included!"};
 	   var circle = d3.select(this);
 	   circle.attr("fill", "white");
 	   circle.attr("r", 2.5);
+     
    }
    
    function highlight(x, y, a) {
@@ -123,7 +124,13 @@ if (!d3) { throw "d3 wasn't included!"};
 			.attr("y2", function(d) {
 				if(d.target.y == pointy && d.target.x == pointx) {
 					var path = d3.select(this);
-					path.attr("stroke", "rgba(255,0,0,"+a+")");
+          if( typeof path[0][0].oldstroke === "undefined" || path[0][0].oldstroke === null){
+            path[0][0].oldstroke = path.attr("stroke");
+    				path.attr("stroke", "rgba(255,0,0,"+a+")");
+          } else {
+            path.attr("stroke", path[0][0].oldstroke);
+            path[0][0].oldstroke = null;
+          }
 					pointy = d.source.y;
 					pointx = d.source.x;
 					a = a-0.1;
@@ -133,37 +140,44 @@ if (!d3) { throw "d3 wasn't included!"};
 				}
 			});
 	}
-	   
+     
       
     vis.selectAll('g.leaf.node')
       .append("svg:circle")
         .attr("r", 2.5)
-        .attr("class", function(d) {return d.type})
+        .attr("class", function(d) {
+          return d.type
+        })
         .attr('stroke',  'steelBlue')
         .attr('fill', 'white')
         .attr('stroke-width', '1.5px')
         .on("mouseout", function(d) {
 	        var circle = d3.select(this);
-		   circle.attr("fill", "white");
-		   circle.attr("r", 2.5);
+	        circle.attr("fill", "white");
+		      circle.attr("r", 2.5);
+          var pointy = d.y;
+  		    var pointx = d.x;
+  		    var a = 1;
+  		    highlight(pointx, pointy, a);          
         })
         .on("mouseover", function(d) {
 	        var circle = d3.select(this);
 	        circle.attr("fill", "steelblue");
 	        circle.attr("r", 3.5);
-	       var pointy = d.y;
-		   var pointx = d.x;
-		   var a = 1;
-		   highlight(pointx, pointy, a);
+	        var pointy = d.y;
+  		    var pointx = d.x;
+  		    var a = 1;
+  		    highlight(pointx, pointy, a);
         })
         .on("click", function(d) {
-        	var circle = d3.select(this);
+        	/*var circle = d3.select(this);
 	        circle.attr("fill", "steelblue");
 	        circle.attr("r", 3.5);
-	       var pointy = d.y;
-		   var pointx = d.x;
-		   var a = 1;
-		   highlight(pointx, pointy, a);
+	        var pointy = d.y;
+  		    var pointx = d.x;
+  		    var a = 1;
+  		    highlight(pointx, pointy, a);
+          */
         });
         	    
     vis.selectAll('g.root.node')
@@ -219,7 +233,7 @@ if (!d3) { throw "d3 wasn't included!"};
         .attr("height", h + 30)
         .attr('pointer-events', 'all')
         .append('svg:g')
-        .call(d3.behavior.zoom().scaleExtent([1,5]).on("zoom", redraw)) //Zooming
+        .call(d3.behavior.zoom().scaleExtent([0.5,5]).on("zoom", redraw)) //Zooming
         .append("svg:g")
         .attr("transform", "translate(0, 0)")
         .attr("id", "phylonator_svg") //Reference
@@ -299,11 +313,20 @@ if (!options.skipTicks) {
           }
         })
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-        
+    
     
     var baseNode = vis.selectAll("g.leaf.node")
-    	.on("click", function(d) {
-    		d3.selectAll("."+d.type).style("fill", "red");
+    	.on("mouseover", function(d) {
+          var pointy = d.y;
+    	    var pointx = d.x;
+  		    var a = 1;
+  		    //  highlight(pointx, pointy, a);  
+    	})
+      .on("mouseout", function(d) {
+          var pointy = d.y;
+          var pointx = d.x;
+  		    var a = 1;
+  		    // highlight(pointx, pointy, a);  
     	});  
         
     var linkedByIndex = {};
@@ -342,7 +365,9 @@ if (!options.skipTicks) {
         .attr('font-size', '10px')
         .attr('fill', 'black')
         .attr("pointer-events", "all")
-        .text(function(d) { return d.data.name + ' ('+d.data.length+')'; });
+        .text(function(d) {
+          return d.name + ' ('+d.length+')'; 
+        });
         
     }
     
