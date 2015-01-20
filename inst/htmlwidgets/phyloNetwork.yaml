@@ -7,6 +7,10 @@ dependencies:
     version: 0.1
     src: "htmlwidgets/lib"
     script: "d3.phylonator.js"
+  - name: phylogram
+    version: 0.1
+    src: "htmlwidgets/lib"
+    script: "d3.phylogram.js"    
   - name: newick
     version: 0.1
     src: "htmlwidgets/lib"

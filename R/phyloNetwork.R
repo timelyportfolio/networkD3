@@ -5,19 +5,6 @@
 #'   \code{NULL} then height is automatically determined based on context)
 #' @param width numeric width for the network graph's frame area in pixels (if
 #'   \code{NULL} then width is automatically determined based on context)
-#' @param fontSize numeric font size in pixels for the node text labels.
-#' @param linkColour character string specifying the colour you want the link
-#' lines to be. Multiple formats supported (e.g. hexadecimal).
-#' @param nodeColour character string specifying the colour you want the node
-#' circles to be. Multiple formats supported (e.g. hexadecimal).
-#' @param nodeStroke character string specifying the colour you want the node
-#' perimeter to be. Multiple formats supported (e.g. hexadecimal).
-#' @param textColour character string specifying the colour you want the text to
-#' be before they are clicked. Multiple formats supported (e.g. hexadecimal).
-#' @param opacity numeric value of the proportion opaque you would like the
-#' graph elements to be.
-#' @param margin integer value of the plot margin. Set the margin
-#' appropriately to accomodate long text labels.
 #'
 #'
 #' @examples
@@ -87,13 +74,7 @@ phyloNetwork <- function(
                           newick,
                           height = NULL,
                           width = NULL,
-                          fontSize = 10,
-                          linkColour = "#ccc",
-                          nodeColour = "#fff",
-                          nodeStroke = "steelblue",
-                          textColour = "#111",
-                          opacity = 0.9,
-                          margin = 0)
+                          type = "phylogram", ...)
 {
     # validate input
 
@@ -102,19 +83,13 @@ phyloNetwork <- function(
     options = list(
         height = height,
         width = width,
-        fontSize = fontSize,
-        linkColour = linkColour,
-        nodeColour = nodeColour,
-        nodeStroke = nodeStroke,
-        textColour = textColour,
-        margin = margin,
-        opacity = opacity
+        ...
     )
 
     # create widget
     htmlwidgets::createWidget(
       name = "phyloNetwork",
-      x = list(newick = newick, options = options),
+      x = list(newick = newick, type = type, options = options),
       width = width,
       height = height,
       htmlwidgets::sizingPolicy(viewer.suppress = TRUE,

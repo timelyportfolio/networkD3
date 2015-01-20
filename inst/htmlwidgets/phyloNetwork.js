@@ -30,11 +30,13 @@ HTMLWidgets.widget({
     buildNewickNodes(newick)
 
     // build the phylogram
-    d3.phylonator.build('#' + el.id, newick, {
-        width: 800,
-        height: 600,
-        skipTicks: true
-    });
-
+    if( x.type == "phylonator"){
+      d3.phylonator.build('#' + el.id, newick, x.options);
+    } else if(x.type == "phylogram" ) {
+      d3.phylogram.build('#' + el.id, newick, x.options);
+    } else if(x.type == "phylogram.radial" ) {
+      d3.phylogram.buildRadial('#' + el.id, newick, x.options);
+    }
+    
   },
 });
