@@ -337,7 +337,7 @@ d3.phylogram.rightAngleDiagonal for radial layouts.
       .attr('font-family', 'Helvetica Neue, Helvetica, sans-serif')
       .attr('font-size', '10px')
       .attr('fill', 'black')
-      .text(function(d) { return d.data.name; });
+      .text(function(d) { return d.name; });
       
       vis.selectAll('g.inner.node text')
       .attr("dx", function(d) { return d.x < 180 ? -6 : 6; })
