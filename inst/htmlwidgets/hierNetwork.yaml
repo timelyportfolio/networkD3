@@ -11,3 +11,4 @@ dependencies:
     version: 0.1
     src: "htmlwidgets/lib"
     script: d3.chart.layout.hierarchy.js
+    style: hierStyles.css
