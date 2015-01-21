@@ -6,9 +6,7 @@
   stroke: steelblue;*/
   stroke-width: 1.5px;
 }
-.hierNetwork   .node text {
-  font-size: 11px;
-}
+
 .hierNetwork   path.link {
   fill: none;
   /*stroke: #ccc;
@@ -41,4 +39,9 @@
 .hierNetwork.partitionrectangle rect.parent {
   cursor: pointer;
   fill: steelblue;
+}
+.hierNetwork.partitionarc  path {
+  cursor: pointer; 
+  stroke: #fff;
+  fill-rule: evenodd;
 }
