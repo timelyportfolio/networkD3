@@ -244,7 +244,7 @@ d3.chart("hierarchy").extend("cluster-tree", {
     var chart = this;
 
     chart.once("collapse:init", function() {
-      chart.root.children.forEach(collapse);
+      //chart.root.children.forEach(collapse);
     });
 
 
