@@ -1,41 +1,55 @@
 #' Create Hierarchical d3 Visualization
 #'
 #' @param List a hierarchical list object with a root node and children.
+#' @param type String type of chart.
+#' \itemize{
+#'      \item{Default "tree.cartesian"}
+#'      \item{"tree.radial"}
+#'      \item{"cluster.cartesian"}
+#'      \item{"cluster.radial"}
+#'      \item{"pack.nested"}
+#'      \item{"pack.flattened"}
+#'      \item{"partition.arc"}
+#'      \item{"partition.rectangle"}
+#'      \item{"treemap"}
+#' }
+#' @param value String name of the variable to use to size the nodes
+#'    in chart "types" where applicable:
+#'     \code{"pack.nested"},
+#'     \code{"pack.flattened"},
+#'     \code{"partition.arc"},
+#'     \code{"partition.rectangle"},
+#'     \code{"treemap"}.
+#'    \code{"size"} is the default.
+#' @param zoomable Logical Set \code{TRUE} to add pan and zoom
+#' @param collapsible Logical Set \code{TRUE} to add collapsible nodes
+#' @param radius = NULL
+#' @param duration Integer length of duration for animations. Default is 750.
+#' @param margin List of plot margins in px by side. Set the margin
+#'   appropriately to accomodate long text labels.
+#'   \code{margin = list(left=100,top=20)}
 #' @param height height for the network graph's frame area in pixels (if
 #'   \code{NULL} then height is automatically determined based on context)
 #' @param width numeric width for the network graph's frame area in pixels (if
 #'   \code{NULL} then width is automatically determined based on context)
-#' @param fontSize numeric font size in pixels for the node text labels.
-#' @param linkColour character string specifying the colour you want the link
-#' lines to be. Multiple formats supported (e.g. hexadecimal).
-#' @param nodeColour character string specifying the colour you want the node
-#' circles to be. Multiple formats supported (e.g. hexadecimal).
-#' @param nodeStroke character string specifying the colour you want the node
-#' perimeter to be. Multiple formats supported (e.g. hexadecimal).
-#' @param textColour character string specifying the colour you want the text to
-#' be before they are clicked. Multiple formats supported (e.g. hexadecimal).
-#' @param opacity numeric value of the proportion opaque you would like the
-#' graph elements to be.
-#' @param margin integer value of the plot margin. Set the margin
-#' appropriately to accomodate long text labels.
 #'
 #'
 #' @examples
 #' \dontrun{
-#' #### Create tree from JSON formatted data
-#' ## Download JSON data
-#' library(RCurl)
-#' Flare <- getURL("http://bit.ly/1uNNAbu")
-#'
-#' ## Convert to list format
-#' Flare <- rjson::fromJSON(Flare)
-#'
-#' ## Recreate Bostock example from http://bl.ocks.org/mbostock/4063550
-#' treeNetwork(List = Flare, fontSize = 10, opacity = 0.9)
-#'
 #' #### Create a tree dendrogram from an R hclust object
 #' hc <- hclust(dist(USArrests), "ave")
-#' treeNetwork(as.treeNetwork(hc))
+#' 
+#' #### Look at the chart types that apply to this data
+#' lapply(
+#'   c("tree.cartesian"
+#'     ,"tree.radial"
+#'     ,"cluster.cartesian"
+#'     ,"cluster.radial"
+#'   )
+#'   ,function(chartType){
+#'     hierNetwork( as.treeNetwork(hc), type = chartType, zoomable = T, collapsible = T )
+#'   }
+#' )
 #'
 #' #### Create tree from a hierarchical R list
 #' CanadaPC <- list(name = "Canada", children = list(list(name = "Newfoundland",
@@ -69,13 +83,14 @@
 #'                     children = list(list(name = "Whitehorse")))
 #' ))
 #'
-#' treeNetwork(List = CanadaPC, fontSize = 10)
+#' hierNetwork(List = CanadaPC, type = "cluster.radial", collapsible = T)
+#' hierNetwork(List = CanadaPC, type = "cluster.cartesian"
+#'   , margin = list(left=100), collapsible = T, zoomable = T )
 #' }
 #'
-#' @source Reingold. E. M., and Tilford, J. S. (1981). Tidier Drawings of Trees.
-#' IEEE Transactions on Software Engineering, SE-7(2), 223-228.
+#' @source Anna Bansaghi \url{https://github.com/bansaghi/d3.chart.layout}
 #'
-#' Mike Bostock: \url{http://bl.ocks.org/mbostock/4063550}.
+#' Irene Ros & Mike Pennisi \url{https://github.com/misoproject/d3.chart}.
 #'
 #' @importFrom rjson toJSON
 #' @export
@@ -83,13 +98,15 @@
 hierNetwork <- function(
   List,
   type = "tree.cartesian",
-  value = "size",
+  value = "size",     # name of the column for size/value where applicable
   height = NULL,
   width = NULL,
-  margin = 0,
-  ...
-  )
-{
+  margin = NULL,      # list with any/all of top, right, left, bottom in Px
+  zoomable = NULL,    # logical; add pan and zoom
+  collapsible = NULL, # logical; add collapsible
+  radius = NULL,
+  duration = NULL
+){
   # validate input
   if (!is.list(List))
     stop("List must be a list object.")
@@ -102,7 +119,13 @@ hierNetwork <- function(
     height = height,
     width = width,
     margin = margin,
-    ...)
+    zoomable = zoomable,
+    collapsible = collapsible,
+    radius = radius,
+    duration = duration
+  )
+  
+  options = Filter(Negate(is.null),options)
   
   # create widget
   htmlwidgets::createWidget(
