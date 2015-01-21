@@ -30,3 +30,10 @@ tagList(
     }
   )
 ) %>>% html_print
+
+# -----------------------------------------
+#To Do:
+#  
+#  1. add in all the options
+#  2. margin and sizing
+#  3. labels for sunburst / partition.arc
