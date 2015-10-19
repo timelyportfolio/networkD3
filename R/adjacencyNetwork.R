@@ -23,6 +23,12 @@
 #' \code{Nodes} data frame.
 #' @param height numeric height for the network graph's frame area in pixels.
 #' @param width numeric width for the network graph's frame area in pixels.
+#' @param margin an integer or a named \code{list}/\code{vector} of integers
+#' for the plot margins. If using a named \code{list}/\code{vector},
+#' the positions \code{top}, \code{right}, \code{bottom}, \code{left}
+#' are valid.  If a single integer is provided, then the value will be
+#' assigned to the right margin. Set the margin appropriately
+#' to accomodate long text labels.
 #' @param colourScale character string specifying the categorical colour
 #' scale for the nodes. See
 #' \url{https://github.com/mbostock/d3/wiki/Ordinal-Scales}.
@@ -136,6 +142,7 @@ adjacencyNetwork <- function(Links,
                          Group,
                          height = NULL,
                          width = NULL,
+                         margin = NULL,
                          colourScale = JS("d3.scale.category20()"),
                          fontSize = 7,
                          fontFamily = "serif",
@@ -180,6 +187,8 @@ adjacencyNetwork <- function(Links,
                 names(NodesDF) <- c("name", "group")
                 nodesize = FALSE
         }
+        
+        margin <- margin_handler(margin)
 
         # create options
         options = list(
@@ -200,7 +209,8 @@ adjacencyNetwork <- function(Links,
                 radiusCalculation = radiusCalculation,
                 bounded = bounded,
                 opacityNoHover = opacityNoHover,
-                clickAction = clickAction
+                clickAction = clickAction,
+                margin = margin
         )
 
         # create widget

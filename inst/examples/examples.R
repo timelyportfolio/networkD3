@@ -74,6 +74,12 @@ forceNetwork(Links = MisLinks, Nodes = MisNodes, Source = "source",
              Nodesize = 'size', radiusCalculation = " Math.sqrt(d.nodesize)+6",
              Group = "group", opacity = 1, legend = T, bounded = T) 
 
+# using Miserables data draw adjacency matrix
+adjacencyNetwork(
+  Links = MisLinks, Nodes = MisNodes,
+  NodeID = "name", Group = "group"
+)
+
 
 # sankeyNetwork
 URL <- "https://cdn.rawgit.com/christophergandrud/networkD3/master/JSONdata/energy.json"
@@ -153,3 +159,4 @@ chordNetwork(data = hairColourData,
              width = 500, 
              height = 500,
              colourScale = c("#000000", "#FFDD89", "#957244", "#F26223"))
+
