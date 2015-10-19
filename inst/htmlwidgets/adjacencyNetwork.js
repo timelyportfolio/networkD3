@@ -88,6 +88,14 @@ HTMLWidgets.widget({
   
     svg
       .call(adjacencyMatrix.yAxis);
+      
+    // style x and y axis instead of css
+    svg.selectAll(".am-axis .tick > line")
+       .style("stroke", "black")
+       .style("stroke-width", "1px");
+       
+    svg.selectAll(".am-axis path")
+       .style("fill","none");
 
     function click(d) {
       return eval(options.clickAction)
