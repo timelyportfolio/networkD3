@@ -1,3 +1,4 @@
+#devtools::install_github("timelyportfolio/networkD3@feature/adjacency")
 library(networkD3)
 
 # using Miserables data draw adjacency matrix
