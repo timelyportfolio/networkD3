@@ -74,12 +74,28 @@ forceNetwork(Links = MisLinks, Nodes = MisNodes, Source = "source",
              Nodesize = 'size', radiusCalculation = " Math.sqrt(d.nodesize)+6",
              Group = "group", opacity = 1, legend = T, bounded = T) 
 
+
 # using Miserables data draw adjacency matrix
 adjacencyNetwork(
   Links = MisLinks, Nodes = MisNodes,
+  Source = "source", Target = "target",
   NodeID = "name", Group = "group"
 )
 
+library(igraph)
+data(karate, package = "igraphdata")
+karate_df <- get.data.frame(karate, what = "both")
+karate_df$edges$from <- match(karate_df$edges$from,karate_df$vertices$name) - 1
+karate_df$edges$to <- match(karate_df$edges$to,karate_df$vertices$name) - 1
+adjacencyNetwork(
+  Links = karate_df$edges,
+  Nodes = karate_df$vertices[,c(2,1)],
+  Source = "from",
+  Target = "to",
+  NodeID = "name",
+  Group = "Faction",
+  margin = list(left=100, top=100)
+)
 
 # sankeyNetwork
 URL <- "https://cdn.rawgit.com/christophergandrud/networkD3/master/JSONdata/energy.json"

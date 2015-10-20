@@ -81,7 +81,9 @@ HTMLWidgets.widget({
       .style("stroke-width", "1px")
       .style("stroke-opacity", .1)
       .style("fill", function (d) {return color(d.source.group)})
-      .style("fill-opacity", function (d) {return d.weight * .8});
+      .style("fill-opacity", function (d) {
+        return d.weight * .8
+      });
 
     svg
       .call(adjacencyMatrix.xAxis);
