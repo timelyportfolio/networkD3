@@ -29,3 +29,14 @@ d3heatmap(
   colors = col_numeric("RdBu",c(-.2,1)),
   dendrogram="none"
 )
+
+d3heatmap(
+  Cl,
+  # play with cellnote to remember how
+  cellnote = matrix(percent(Cl),nrow=nrow(Cl)),
+  colors = col_bin("BuPu",c(-1,1),bins=10),
+  dendrogram="none",
+  cexRow = 0.5,
+  cexCol = 0.5,
+  height = 400, width = 400
+)
