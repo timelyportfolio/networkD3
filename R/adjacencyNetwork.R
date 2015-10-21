@@ -171,12 +171,18 @@ adjacencyNetwork <- function(Links,
                 stop("Nodes must be a data frame class object.")
         }
         if (missing(Value)) {
-                LinksDF <- data.frame(Links[, Source], Links[, Target])
-                names(LinksDF) <- c("source", "target")
+                LinksDF <- data.frame(
+                  Links[, Source], Links[, Target],
+                  Links[, -match(c(Source,Target),colnames(Links))]
+                )
+                names(LinksDF)[1:2] <- c("source", "target")
         }
         else if (!missing(Value)) {
-                LinksDF <- data.frame(Links[, Source], Links[, Target], Links[, Value])
-                names(LinksDF) <- c("source", "target", "value")
+                LinksDF <- data.frame(
+                  Links[, Source], Links[, Target], Links[, Value],
+                  Links[, -match(c(Source,Target,Value),colnames(Links))]
+                )
+                names(LinksDF)[1:3] <- c("source", "target", "value")
         }
         if (!missing(Nodesize)){
                 NodesDF <- data.frame(Nodes[, NodeID], Nodes[, Group], Nodes[, Nodesize])
