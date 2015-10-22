@@ -47,7 +47,6 @@ d3heatmap(
 #   https://github.com/octonion/football
 
 library(dplyr)
-library(igraph)
 library(pipeR)
 
 # get game data
@@ -102,8 +101,8 @@ graph_from_data_frame(
   get.adjacency(sparse = FALSE, attr="game_date") %>>%
   (
     d3heatmap(
-      x = .,
+      x = . - as.numeric(Sys.Date()),
       cellnote = as.Date(.,origin="1970-01-01"),
-      colors = "Blues"
+      colors = "BuPu"
     )
   )
