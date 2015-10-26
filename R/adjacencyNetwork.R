@@ -175,14 +175,23 @@ adjacencyNetwork <- function(Links,
                   Links[, Source], Links[, Target],
                   Links[, -match(c(Source,Target),colnames(Links))]
                 )
-                names(LinksDF)[1:2] <- c("source", "target")
+                names(LinksDF) <- c(
+                  "source",
+                  "target",
+                  colnames(Links)[-match(c(Source,Target),colnames(Links))]
+                )
         }
         else if (!missing(Value)) {
                 LinksDF <- data.frame(
                   Links[, Source], Links[, Target], Links[, Value],
                   Links[, -match(c(Source,Target,Value),colnames(Links))]
                 )
-                names(LinksDF)[1:3] <- c("source", "target", "value")
+                names(LinksDF) <- c(
+                  "source",
+                  "target",
+                  "value",
+                  colnames(Links)[-match(c(Source,Target,Value),colnames(Links))]
+                )
         }
         if (!missing(Nodesize)){
                 NodesDF <- data.frame(Nodes[, NodeID], Nodes[, Group], Nodes[, Nodesize])
