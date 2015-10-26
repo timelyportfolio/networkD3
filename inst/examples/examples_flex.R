@@ -7,20 +7,19 @@ library(networkD3)
 data(GNI2010)
 tm <- treemap(
   GNI2010
-  ,index=c("continent")#, "iso3")
+  ,index=c("continent"),#, "iso3")
   ,vSize="population"
   ,vColor="GNI"
   ,type="value"
 )
 
-tm$tm$x_size <- tm$tm$w * 100
-tm$tm$y_size <- tm$tm$h * 100
-tm_d3 <- d3treeR:::convert_treemap(tm$tm)
+tm$tm$y_size <- tm$tm$w * 100
+tm$tm$x_size <- tm$tm$h * 100
+tm_d3 <- d3treeR:::convert_treemap(tm$tm,rootname="world")
 tm_d3$x_size <- 100
 tm_d3$y_size <- 100
 
-flexNetwork(tm_d3)
-
+flexNetwork(tm_d3,spacing = htmlwidgets::JS("function(a,b){return 1}"))
 
 
 library(jsonlite)

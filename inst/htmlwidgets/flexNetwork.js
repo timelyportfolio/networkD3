@@ -162,13 +162,6 @@ HTMLWidgets.widget({
       .attr("d", diagonal);
 
 
-      function rand() {
-        return 80 + Math.floor(Math.random() * 100);
-      }
-      var filler = function() {
-              return "fill: rgb(" + rand() + "," + rand() + "," + rand() + ")";
-            };
-  
       // Reposition everything according to the layout
       node.attr("transform", function(d) { 
           return "translate(" + svg_x(d.y) + "," + svg_y(d.x) + ")"; 
@@ -189,8 +182,11 @@ HTMLWidgets.widget({
             },
             height: function(d) { 
               return d.x_size * scale - nodebox_vertical_margin; 
-            },
-            style: filler,
+            }
+          })
+          .style("fill",function(d){
+            if(d.color) return d.color;
+            return "rgb(156,151,151)";
           })
       ;
     // node text
@@ -210,32 +206,32 @@ HTMLWidgets.widget({
         "viewBox",
         [
           d3.min(
-            s.selectAll('.node text')[0].map(function(d){
+            s.selectAll('g')[0].map(function(d){
               return d.getBoundingClientRect().left
             })
           ) - s.node().getBoundingClientRect().left - margin.right,
           d3.min(
-            s.selectAll('.node text')[0].map(function(d){
+            s.selectAll('g')[0].map(function(d){
               return d.getBoundingClientRect().top
             })
           ) - s.node().getBoundingClientRect().top - margin.top,
           d3.max(
-            s.selectAll('.node text')[0].map(function(d){
+            s.selectAll('g')[0].map(function(d){
               return d.getBoundingClientRect().right
             })
           ) -
           d3.min(
-            s.selectAll('.node text')[0].map(function(d){
+            s.selectAll('g')[0].map(function(d){
               return d.getBoundingClientRect().left
             })
           ) + margin.left + margin.right,
           d3.max(
-            s.selectAll('.node text')[0].map(function(d){
+            s.selectAll('g')[0].map(function(d){
               return d.getBoundingClientRect().bottom
             })
           ) -
           d3.min(
-            s.selectAll('.node text')[0].map(function(d){
+            s.selectAll('g')[0].map(function(d){
               return d.getBoundingClientRect().top
             })
           ) + margin.top + margin.bottom
