@@ -4,11 +4,11 @@ HTMLWidgets.widget({
   type: "output",
 
   initialize: function(el, width, height) {
-    el.style.overflow = "scroll";
+    //el.style.overflow = "scroll";
     
     d3.select(el).append("svg")
-      //.style("width", "100%")
-      //.style("height", "100%")
+      .style("width", "100%")
+      .style("height", "100%")
       .append("g")
       .attr("transform", "translate(40,0)");
     return d3.layout.flextree()
@@ -238,10 +238,6 @@ HTMLWidgets.widget({
         ].join(",")
       );
       
-     s.attr({
-        width: (ymax - ymin) * scale,
-        height: (xmax - xmin) * scale,
-      });
 
     // mouseover event handler
     function mouseover() {
