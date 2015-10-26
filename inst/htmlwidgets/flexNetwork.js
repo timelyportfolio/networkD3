@@ -17,20 +17,7 @@ HTMLWidgets.widget({
   },
 
   resize: function(el, width, height, tree) {
-    // resize now handled by svg viewBox attribute
-    /*
-    var s = d3.select(el).selectAll("svg");
-    s.attr("width", width).attr("height", height);
-    
-    var margin = {top: 20, right: 20, bottom: 20, left: 20};
-    width = width - margin.right - margin.left;
-    height = height - margin.top - margin.bottom;
-    
-    tree.size([height, width]);
-    var svg = d3.select(el).selectAll("svg").select("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    */
-
+   
   },
 
   renderValue: function(el, x, tree) {
@@ -59,7 +46,13 @@ HTMLWidgets.widget({
     height = s.node().getBoundingClientRect().height - margin.top - margin.bottom;
     
     //tree.size([height, width])
-    tree.separation(function(a, b) { return 1 })//(a.parent == b.parent ? 1 : 2) / a.depth; });
+    if(x.options.spacing){
+      tree.spacing(x.options.spacing);
+    }
+    
+    if(x.options.separation){
+      tree.separation(x.options.separation);
+    }
       
     tree.nodeSize(function(d){
       return [d.x_size,d.y_size];

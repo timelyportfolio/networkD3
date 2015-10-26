@@ -23,6 +23,7 @@
 #' are valid.  If a single integer is provided, then the value will be
 #' assigned to the right margin. Set the margin appropriately
 #' to accomodate long text labels.
+#' @param spacing
 #'
 #' @source Reingold. E. M., and Tilford, J. S. (1981). Tidier Drawings of Trees.
 #' IEEE Transactions on Software Engineering, SE-7(2), 223-228.
@@ -42,7 +43,10 @@ flexNetwork <- function(
                           nodeStroke = "steelblue",
                           textColour = "#111",
                           opacity = 0.9,
-                          margin = NULL)
+                          margin = NULL,
+                          spacing = NULL,
+                          separation = NULL
+                       )
 {
     # validate input
     if (!is.list(List))
@@ -62,7 +66,9 @@ flexNetwork <- function(
         nodeStroke = nodeStroke,
         textColour = textColour,
         margin = margin,
-        opacity = opacity
+        opacity = opacity,
+        spacing = spacing,
+        separation = separation
     )
 
     # create widget
